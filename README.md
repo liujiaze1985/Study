@@ -1,2 +1,2 @@
 # javaEEStudy
-用来学习javaEE相关知道
+用来学习javaEE相关知识
