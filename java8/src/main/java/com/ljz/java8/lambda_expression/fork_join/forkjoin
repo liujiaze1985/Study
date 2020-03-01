@@ -1,0 +1,8 @@
+ForkJoin 分而治之
+Fork 计算 先拆分计算
+Join 将分片计算的结果反向合并
+比较重要的类
+ForkJoinPool extends AbstractExecutorService
+重要方法
+RecursiveAction 无返回类型，将任务拆分成多个并行的动作
+RecursiveTask 有返回值

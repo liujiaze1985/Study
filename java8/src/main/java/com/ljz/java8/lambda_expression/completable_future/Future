@@ -1,0 +1,62 @@
+Future 原理
+invoker 执行者
+action  动作
+invoker         ---------------------------->            action
+
+同步的时候 invoker 受action执行时间制约
+
+
+future  异步化
+
+
+CompletableFuture
+get
+toString
+join
+handle
+acceptEither
+acceptEitherAsync
+allOf
+anyOf
+applyToEither
+applyToEitherAsync
+cancel
+complete
+completeExceptionally
+completedFuture
+exceptionally
+getNow
+getNumberOfDependents
+handleAsync
+isCancelled
+isCompletedExceptionally
+isDone
+obtrudeException
+obtrudeValue
+runAfterBoth
+runAfterBothAsync
+runAfterEither
+runAfterEitherAsync
+runAsync
+supplyAsync
+thenAccept
+thenAcceptAsync
+thenAcceptBoth
+thenAcceptBothAsync
+thenApply
+thenApplyAsync
+thenCombine
+thenCombineAsync
+thenCompose
+thenComposeAsync
+thenRun
+thenRunAsync
+toCompletableFuture
+whenComplete
+whenCompleteAsync
+wait
+equals
+hashCode
+getClass
+notify
+notifyAll

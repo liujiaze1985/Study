@@ -1,0 +1,12 @@
+chapter9
+Guarded  Suspension
+场景 ：
+ A 在厨房做饭
+ B 是快递员，敲门，说你的快递来了，要求开门
+ A 等我一下，我一会儿再来，先忙完再开门
+
+类似于tomcat 的场景
+
+request1 -> tomcat httpServer ->doing
+request2 -> tomcat httpServer
+				-> queue

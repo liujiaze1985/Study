@@ -1,0 +1,36 @@
+AtomicReference
+
+API：
+	get
+	set
+	lazySet
+	accumulateAndGet
+	compareAndSet
+	getAndAccumulate
+	getAndSet
+	getAndUpdate
+	updateAndGet
+	weakCompareAndSet
+
+定义了一个对象，把它怎么做为一个原子类型
+
+
+CAS 的好处
+	可见性，有序性，原子性，
+	1.volatile修饰的变量，能保证前两者
+	2。CAS算法，CPU级别的同步指令，相当于乐观锁，它可以检测到其他线程对共享数据 的变化情况。
+
+	atomicInteger++ 相当于 incrementalAndGet()
+
+CAS轻量级锁，带来的ABA问题
+描述：
+CPU恰巧都调用到线程T2将A变为B又变为A，线程T1要将A变为C
+T1       	T2
+
+A			A->B->A
+C
+
+这种情况，在链表操作中会有问题
+
+
+AtomicStampedReference可用来解决ABA问题

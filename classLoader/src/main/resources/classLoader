@@ -1,0 +1,288 @@
+1. 什么是ClassLoader
+	ClassLoader负责加载类，在类的首次主动使用的时候，帮你调用,加载这个类的信息
+	给定一个二进制文件名称,根据文件名，从类的文件中读取数据，然后解析，初始化的的一个过程
+
+2. 类加载详解
+	简单来说，就是将class文件中的二进制数据读取到内存中，将其放在方法区中，
+	然后在堆区中创建一个java.lang.Class对象，用来封闭在方法区的数据结构
+
+
+3. 类的链接详解
+4. 类的初始化详解
+5. 类加载器（JDK自带） 详细介绍
+6. 类加载的父委托机制
+7. 命名空间&运行时包
+8. 创建自定义类加载器
+9. 类的卸载
+10. 自定义解密加密类加载器
+11. 线程上下文类加载器
+12. 关于JVM类加载器的总结
+
+
+
+============================================================
+1.1 结束一个JVM生命周期的方式
+	1. System.exit
+	2. Normal finish done
+	3. Encounter the error or exception
+	4. Crash
+	5. OS problems or others
+
+1.2 类加载的三个阶段
+	三个阶段：loading-->linking(verifying preparing [resolving]) --> Initialising
+		加载：查找并加载类的二进制数据
+		链接：
+			-验证：确保被加载类的正确性
+			-准备：为类的静态变量分配内存，并将其初始化为默认值
+			-解析：把类中的符号引用转换为直接引用
+		初始化：为类的静态变量赋予正确的初始值
+
+1.3 java程序对类的使用方式
+	1. 主动使用
+		1. new ，直接使用
+		2. 访问某个类或者接口的静态变量，或者对该静态变量进行赋值操作
+		3. 调用静态方法
+		4. 反射某个类
+		5. 初始化一个子类
+		6. 启动类，比如 java HelloWorld
+
+		除了上述6个以外，其余的都是被动使用，不会导致类的初始化
+
+	2. 被动使用
+
+	所有的java虚拟机实现必须 在每个类或者接口被java程序 首次主动使用 时才初始化他们，
+	当然现代JVM有可能根据程序的上下文语义推断出接下来可能初始化谁（）
+
+
+2. 1 类加载的最终产物
+
+	java 源文件 --> java编译器 --> class文件 --> ClassLoader类加载器
+		--> 执行引擎（java管理的内存（方法区，java堆，栈帧，PC寄存器，本地方法区））
+																	|
+																    ﹀
+																 本地方法接口
+2. 2 加载类的方式
+	1. 本地磁盘中直接加载
+		从classpath
+	2. 内存中直接加载
+		asm ，动态代理 产生的数据
+	3. 通过网络加载.class
+
+	4. 从zip,jar等归档 文件中加载.class文件
+	5. 数据库中提取.class文件
+	6. 动态编译
+		类似内存加载
+
+2.3 JVM内存简介
+	运行时数据区
+		方法区 Method Area
+			运行时常量池
+			静态变量
+			class的基本信息，数据结构
+		堆 Heap
+			真实数据
+
+
+		虚拟机栈 VM Stack
+			栈帧
+				局部变量表
+				操作数栈
+				动态连接
+				返回地址
+
+		本地方法区  Native Method Stack
+			执行c++ 的东西
+
+
+		程序计数器 Program Count Register
+			指向当前所要执行的指令，接下来要执行什么，如果当前执行的是一个native的方法，程序计数器将会标记为undefined
+
+	执行引擎
+
+	本地库接口
+
+	本地方法库
+
+	以上区域关系：
+			运行时数据区
+			︽			︽
+			||			||
+			||			||
+			︾			︾
+		执行引擎  -->   本地库接口 --> 本地方法库
+
+	由所有线程共享的数据区
+		方法区
+		堆
+
+	线程隔离的数据区
+		虚拟机栈
+		本地方法栈
+		程序计数器
+2. 4 class和object对象在内存中
+2. 5 创建一个对象的过程
+	1. 
+	2. 
+
+3.链接阶段
+	1. 在加载阶段完成后，虚拟机外部的二进制数据就会按照虚拟机所需要的格式存储在方法区中（数据结构 ），
+		然后在堆区中创建一个Class对象，这个对象作为程序访问方法区中这些数据结构 的外部接口. 
+	2. 加载阶段与链接阶段的部分内容是可以是交叉进行的，比如一部分代码加载完成就可以进行验证，提高效率
+
+	三个小阶段
+		-验证：确保被加载类的正确性，
+			主要目的：是确保Class文件中的字节流中包含的信息符合虚拟机的要求，并且不会损害到JVM自身的安全
+
+			VerifyError：验证不通过，出现的信息
+
+			文件格式验证：
+				魔术因子是否正确，0xCAFEBABE
+				主从版本号是否符合当前虚拟机
+				常量池中的常量类型是不是不支持
+				etc
+
+			元数据验证：
+				是否有父类
+				父类是不是允许继承
+				是否实现了抽象方法
+				是否覆盖了父类的final字段
+				其他的语义检查
+
+			字节码验证：
+				主要是进行数据流和控制流的分析，不会出现这样的情况，在操作栈中放置了一个int类型，但是却给了一个long的数据
+
+			符号引用验证：
+				调用了一个不存在的方法，字段. . . . . 
+				目的是确保解析动作能正常执行，如果 无法通过符号引用验证，
+				将会抛出一个java.lang.IncompatibleClassChangeError异常的子类，
+				如
+					java.lang.IllegalAccessError,
+					java.lang.NoSuchFieldError,
+					java.lang,NoSuchMethodError
+					....
+
+		-准备：为类的静态变量分配内存，并将其初始化为默认值
+				数据类型					   零    值
+				int						   	0
+				long					   	0L
+				short					   (short)0
+				char					   ‘\u0000’
+				byte					   (byte) 0
+				boolean					  	false
+				float					    0.0f
+				double					    0.0d
+				reference					null
+
+		-解析：把类中的符号引用转换为直接引用
+				类或者接口的解析
+				字段解析
+				类方法解析
+				接口方法解析
+
+				虚拟机规范之中并未规定解析阶段发生的具体时间，只要求了在执行
+				anewarray、checkcast、getfield、getstatic、instanceof、invokeinterface、invokespecial、invokesstatic、invokevirtual、multianewarray、new、putfield和putstatic
+				这13个用于操作符号引用的字节码指令之前 ，先对它们所使用的符号引用进行解析. 
+				所以虚拟机实现会根据需要来判断 ，到底是在类被加载时就对常量池中的符号引用进行解析，还是等到一个符号引用将要被 使用前才解析它. 
+
+4.初始化阶段
+	1. 类加载过程中的最后一步
+	2. ~是执行构造函数<clinit>()方法的过程
+	3. <clinit>()方法是由编译器自动收集类中的所有变量的赋值动作和静态语句块中的语句合并产生的
+	4. 静态语句块只能访问到定义在静态语句块之前的变量，定义在他之后的变量，只能赋值，不能访问
+	5. <clinit>()方法与类的构造函数有点区别，它不需要显示 的调用父类的构造函数，
+		虚拟机会保证在子类的<clinit>()执行之前 ，先执行父类的<clinit>()，因此在虚拟机中首先被 执行的是Object 的<clinit>()方法
+	6. 由于父类的<clinit>()方法要先执行，也就意味着父类中定义的静态语句块，要优先于子类
+	7. <clinit>()方法对于一个类来说不是必须的
+	8. 接口照样存在<clinit>() 方法
+	9. 虚拟机有义务 保证<clinit>() 方法的线程安全
+
+5. 类加载器（JDK自带） 详细介绍
+	1. 根（Bootstrap） 类加载器:该加载器没有父加载器. 
+	 	它负责加载虚拟机的核心类库，如java.lang.*等. 
+	 	根类加载器人系统属性sun.boot.class.path所指定的目录中加载类库. 
+	 	根类加载器的实现依赖于底层操作系统， 属于虚拟机的实现的一部分，它并没有继承java.lang.ClassLoader类
+	2. 扩展（Extension）类加载器:它的父加载器为根类加载器. 
+		它从java.ext.dirs系统属性所指定的目录中加载类库，或者从JDK的安装 目录的jre\lib\ext子目录（扩展目录）下加载类库，
+		如果把用户创建的JAR文件放在这个目录下，也会自动由扩展类加载器加载. 
+		扩展类加载器是纯JAVA类，是java.lang.ClassLoader类的子类. 
+	3. 系统 （System）类加载器:也称为应用类加载器，它的父加载器为扩展类加载器. 
+		它从环境变量classpath或者系统属性java.class.path所指定的目录中加载类，
+		它是用户自定义的类加载器的默认父加载器. 
+		系统 类加载器是纯java类是java.lang.ClassLoader类的子类. 
+
+6. 类加载的父委托机制
+	概念：
+		1. 类加载器的委托是优先交给父加载器先去尝试加载
+		2. 父加载器和子加载器其实是一种包装关系，或者包含关系
+	1. 定义类加载器
+		类是由哪个加载器加载的，该加载器就是该类的定义类加载器
+
+	2. 初始类加载器
+		 加载时，一级级向上委托才加载的类，这些类加载器，被称为该类的，初始类加载器
+
+	3. 父子类加载器之间的真实关系
+		包装关系，被包装的是父亲
+
+	4. 父亲委托机制的优点就是能够提高系统的安全性，
+		在此机制下，用户自定义的器不可能加载应该由父加载器加载的可靠类，
+		因此可以防止恶意的代码代替父加载器的可靠代码
+
+	5. tomcat 类加载器 顺序刚好相反
+
+6.1 打破双亲委托
+
+
+7. 命名空间&运行时包
+	命名空间
+		1. 每个类的加载器都有自己的命名空间，命名空间由该加载器及其所有父加载所加载的类组成
+		2. 在同一个命名空间中，不会出现 完整的名字
+	运行时包
+		1. 父类加载器看不到子类加载器加载的类
+		2. 不同命名空间下的类加载器之间的类互相不可访问
+
+8. 创建自定义类加载器
+	实战 MyClassLoader
+
+9. 类的卸载 以及 ClassLoader的卸载
+	JVM 中的Class只有满足以下三个条件，才能被GC回收，也就是该Class被卸载（unload）
+		1. 该类所有的实例都已经被 GC
+		2. 加载该类的ClassLoader实例已经被 GC
+		3. 该类的java.lang.Class对象没有在任何地方被引用
+
+		GC的时候我们是不可控的，那么同样的我们对于Class的卸载也是不可控
+
+10. 自定义解密加密类加载器
+	对称加密 	：AES,DES
+	非对称加密	：RSA
+	摘要			：MD5,
+
+
+
+11. 线程上下文类加载器（相当于JDK开了个后门，打破了双亲委派机制）
+
+	需要用JDBC来说明
+	com.mysql.jdbc.Driver
+    static{
+
+        try {
+            java.sql.DriverManager.registerDriver(new Driver()); //将自己注册
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't register driver!");
+        }
+    }
+
+    com.mysql.jdbc.Driver extends java.sql.Driver
+
+    过程：
+    1。 Class.forName("com.mysql.jdbc.Driver"); 对com.mysql.jdbc.Driver 进行了主动使用，
+
+    2。 com.mysql.jdbc.Driver将自己注册，放入DriverManager中，
+    3。获取链接 DriverManager.getConnection("")
+        callerCL = Thread.currentThread().getContextClassLoader(); //上下文是Application
+        检查的时候使用了Application 的classLoader 来加载了，产生了一个具体Driver的一个实现
+        aClass =  Class.forName(driver.getClass().getName(), true, classLoader);
+    这样一来从 for(DriverInfo aDriver : registeredDrivers)拿出自己，
+    然后就可以创建真正的链接等。。
+    	 Connection con = aDriver.driver.connect(url, info);
+
+12. 关于JVM类加载器的总结

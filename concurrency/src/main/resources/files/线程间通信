@@ -1,0 +1,7 @@
+notify 		Object的方法 	唤醒规则不同 FIFO 随机 栈
+notifyAll 	Object的方法 	全部唤醒
+
+wait 和 sleep的区别
+wait   		Object的方法 	会释放 object monitor的锁		需要使用synchronized		需要被唤醒（除了wait(1000)）
+
+sleep 		Thread的方法		不会释放锁					无需使用synchronized 	无需被唤醒

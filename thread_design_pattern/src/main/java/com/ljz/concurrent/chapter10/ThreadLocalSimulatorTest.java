@@ -1,0 +1,56 @@
+package com.ljz.concurrent.chapter10;
+
+import java.util.Random;
+
+/**
+ * Copyright © 2019年12月17日 liujiaze. All rights reserved.
+ * @Project: javaStudy
+ * @Package: com.ljz.concurrent.chapter10
+ * @Description:
+ * @author: liujiaze
+ * @date: 2019年12月17日 17:29
+ * @version: V1.0
+ */
+public class ThreadLocalSimulatorTest {
+    private final static ThreadLocalSimulator<String> threadLocal = new ThreadLocalSimulator<String>(){
+        @Override
+        public String initialValue() {
+            return "No Value";
+        }
+    };
+
+    private final static Random random = new Random(System.currentTimeMillis());
+
+    //JVM start main thread
+    public static void main(String[] args) throws InterruptedException {
+
+
+        Thread t1 = new Thread(() -> {
+            threadLocal.set("Thread-T1");
+            try {
+                Thread.sleep(random.nextInt(1000));
+                System.out.println(Thread.currentThread().getName() + " " + threadLocal.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        },"Thread-T1");
+
+
+        Thread t2 = new Thread(() -> {
+            threadLocal.set("Thread-T2");
+            try {
+                Thread.sleep(random.nextInt(1000));
+                System.out.println(Thread.currentThread().getName() + " " + threadLocal.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        },"Thread-T2");
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+        System.out.println("=============================================");
+        System.out.println(Thread.currentThread().getName() + " " + threadLocal.get());
+
+    }
+}

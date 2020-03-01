@@ -1,0 +1,65 @@
+chapter1
+	单例：
+		恶汉式 不能懒加载
+		懒加载 可能引起多个实例
+		synchronized 性能不够
+		double check 方式  引起空指针异常
+		volatile instance double check
+		holder
+		enum
+
+chapter2
+	wait set 线程休息室 ，放到monitor 中（锁）
+
+chapter3
+	总线锁-》效率低
+	高速缓存一至性协议
+	cpu cache   cache line
+	volatile 关键字
+
+chapter5
+	观察者设计模式 看线程的生命周期
+
+chapter6
+
+
+chapter7
+	一个方法确保，同一时刻只能一个线程调用 （加锁）
+
+chapter8
+	不可变对象
+
+chapter9
+	挂起
+
+chapter10
+	balking
+
+chapter11
+	生产者 消费者
+
+chapter12
+	Read-Write
+
+chapter13
+	Thread-Per-Message
+
+chapter14
+	Worker Thread (生产者 消费者 的一个变形)
+
+chapter15
+	future
+
+chapter16
+	Two-Phase termination 分阶段中止
+
+chapter17
+	Thread-Specific 线程保险箱
+
+chapter18
+	Active Object
+
+chapter
+	Count Down
+
+

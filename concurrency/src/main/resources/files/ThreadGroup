@@ -1,0 +1,73 @@
+jvm 启动 会有一个根ThreadGroup
+
+ThreadGroup 包含 ThreadGroup 和 Thread,
+	它是一个树型结构
+	每次创建都要包含父ThreadGroup
+
+ThreadGroup 可以集体打断组内线程
+
+Thread 只可访问当前线所在线程组的父线程组的只读信息
+
+
+ThreadGroup API
+
+//捕获线程异常
+public void java.lang.ThreadGroup.uncaughtException(java.lang.Thread,java.lang.Throwable)
+
+//获取名称
+public final java.lang.String java.lang.ThreadGroup.getName()
+//获取父线程组
+public final java.lang.ThreadGroup java.lang.ThreadGroup.getParent()
+
+
+//评估 有多少个活跃线程
+public int java.lang.ThreadGroup.activeCount()
+//评估 有多少个活跃线程组
+public int java.lang.ThreadGroup.activeGroupCount()
+//评估当前线程是否有权限修改 其信息
+public final void java.lang.ThreadGroup.checkAccess()
+
+//销毁 使用之前需要确保线程组中没有活跃线程，确认没有被destroy
+public final void java.lang.ThreadGroup.destroy()
+//是否销毁
+public synchronized boolean java.lang.ThreadGroup.isDestroyed()
+
+
+//拷贝
+public int java.lang.ThreadGroup.enumerate(java.lang.ThreadGroup[])
+//  boolean 是否递归
+public int java.lang.ThreadGroup.enumerate(java.lang.ThreadGroup[],boolean)
+public int java.lang.ThreadGroup.enumerate(java.lang.Thread[],boolean)
+public int java.lang.ThreadGroup.enumerate(java.lang.Thread[])
+
+
+//获取最高优先级
+public final int java.lang.ThreadGroup.getMaxPriority()
+public final void java.lang.ThreadGroup.setMaxPriority(int)
+
+//中断线程组内及子线程组内所有线程
+public final void java.lang.ThreadGroup.interrupt()
+
+
+//设置守护
+//当最后一个线程是stopped 或者最后一个线程组是destroyed的时个 被设置线程组自动销毁
+public final void java.lang.ThreadGroup.setDaemon(boolean)
+//是否守护
+public final boolean java.lang.ThreadGroup.isDaemon()
+
+
+public final void java.lang.ThreadGroup.suspend()
+
+public boolean java.lang.ThreadGroup.allowThreadSuspension(boolean)
+
+
+
+public void java.lang.ThreadGroup.list()
+
+//判断是否是父线程组
+public final boolean java.lang.ThreadGroup.parentOf(java.lang.ThreadGroup)
+
+//下列方法被废弃
+public final void java.lang.ThreadGroup.resume()
+public final void java.lang.ThreadGroup.stop()
+

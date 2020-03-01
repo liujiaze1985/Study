@@ -1,0 +1,47 @@
+API
+
+	//类型强制转换
+	byteValue
+	shortValue
+	intValue
+	longValue
+	floatValue
+	doubleValue
+
+	get
+	set
+	lazySet
+	getAndAdd
+	accumulateAndGet
+	addAndGet
+	compareAndSet
+	decrementAndGet
+	getAndAccumulate
+	getAndDecrement
+	getAndIncrement
+	getAndSet
+	getAndUpdate
+	incrementAndGet
+	updateAndGet
+	weakCompareAndSet
+
+与 AtomicInteger 的区别:
+	AtomicLong 内有下变量
+       /**
+        * Records whether the underlying JVM supports lockless
+        * compareAndSwap for longs. While the Unsafe.compareAndSwapLong
+        * method works in either case, some constructions should be
+        * handled at Java level to avoid locking user-visible locks.
+        */
+       static final boolean VM_SUPPORTS_LONG_CAS = VMSupportsCS8();
+
+       /**
+        * Returns whether underlying JVM supports lockless CompareAndSet
+        * for longs. Called only once and cached in VM_SUPPORTS_LONG_CAS.
+        */
+       private static native boolean VMSupportsCS8();
+
+    VM_SUPPORTS_LONG_CAS 变量的作用：
+
+    因为long 是64位，cpu 是32/64bit ,在数据总线的传输中long类型分两次去传（不能保证原子性），高32位和低32位，
+    该变量的作用是当前操作系统是否支持无锁

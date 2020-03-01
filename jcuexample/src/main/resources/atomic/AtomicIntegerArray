@@ -1,0 +1,8 @@
+1.6 AtomicIntegerArray
+1.7 AtomicLongArray
+1.8 AtomicReferenceArray
+
+Array 中的元素操作是非原子性的，其它的线程看不到
+
+
+以上三个类的方法均类似

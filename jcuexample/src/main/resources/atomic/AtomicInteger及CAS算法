@@ -1,0 +1,6 @@
+AtomicIntegerTest
+AtomicIntegerDetailsTest
+
+利用 CompareAndSet 可以实现一个琐，
+当没有抢到锁，告诉我，抛出一个异常
+com.ljz.concurrent.atomic.chapter1.try_lock

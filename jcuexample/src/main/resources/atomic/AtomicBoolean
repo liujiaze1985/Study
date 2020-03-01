@@ -1,0 +1,10 @@
+API
+	get   获取
+	set			设置
+	lazySet		最终设置为
+	compareAndSet 对比设置
+	getAndSet		先拿出来再设置
+	weakCompareAndSet
+
+应用场景：
+	多线程中，停止某个线程，做为开关

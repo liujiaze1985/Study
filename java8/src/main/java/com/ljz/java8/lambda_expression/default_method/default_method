@@ -1,0 +1,13 @@
+interface default method / static method
+
+ default method  解决向下兼容的问题，其子类不需要实现
+
+
+jdk api 1.0
+
+public interface List<E>{
+	void add(e);
+	Stream<E> stream();//jdk 1.8
+}
+
+commons /Guava 等实现List的类不需要，再修改现有类去实现 default method

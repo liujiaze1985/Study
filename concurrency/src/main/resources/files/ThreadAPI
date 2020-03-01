@@ -1,0 +1,44 @@
+run
+toString
+isInterrupted
+currentThread
+getName
+join
+getThreadGroup
+getStackTrace
+holdsLock
+checkAccess
+dumpStack
+setDaemon   ：设置守护线程
+setPriority :企图修改线程的优先线
+start
+yield
+activeCount
+countStackFrames
+destroy
+enumerate
+getAllStackTraces
+getContextClassLoader
+getDefaultUncaughtExceptionHandler
+getId
+getPriority
+getState
+getUncaughtExceptionHandler
+interrupt : 给当前线程发送中断信号
+interrupted
+isAlive
+isDaemon
+resume
+setContextClassLoader
+setDefaultUncaughtExceptionHandler
+setName
+setUncaughtExceptionHandler
+sleep : 休眠
+stop : 被废弃 打断线程 不建议使用
+suspend
+wait
+equals
+hashCode
+getClass
+notify
+notifyAll

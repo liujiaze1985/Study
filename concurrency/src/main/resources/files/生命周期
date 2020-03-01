@@ -1,0 +1,15 @@
+new  		创建：	new thread()
+runnable	可执行状态：Thread.start()
+running		执行状态：runnable被cpu分配执行权（dispatch）---->running ，，
+			当cpu执行权移交给其它线程时，可能会回到runnable状态
+blocked		阻塞：running---> sleep,争抢锁进入blocked
+				 blocked 不能立即进入running,阻塞结束后只能进入runnable
+terminated	终结：running正常结束--->terminated
+				 blocked wait ,sleep,抢锁时 被打断 可能会进入 --->terminated
+				 runnable时线程意外死了--->terminated
+
+
+
+
+start() 只启动线程
+run()   实现具体的业务逻辑

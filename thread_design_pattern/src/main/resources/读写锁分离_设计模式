@@ -1,0 +1,32 @@
+用到的知识点：
+waitset
+wait
+notifyAll
+
+solution
+ReadWriterLock
+
+BooleanLock 可被中断
+
+synchronized 不可被中断
+
+
+
+是否有 SharedResource （共享资源）
+
+data 数据的操作分为
+	1. read
+	2. write
+
+1.read other thread will enter to the waitset
+2.read write 锁分离
+
+concern conflict 冲突
+1. read read 并行化
+2. read write 不允许
+3. write write 不允许
+
+是否需要串行化处理
+		READ	WRITE
+READ	 N		  Y
+WRITE	 Y		  Y

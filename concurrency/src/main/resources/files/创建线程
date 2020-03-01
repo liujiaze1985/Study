@@ -1,0 +1,15 @@
+创建线程对象Thread，默认有一个线程名，以Thread-开头，从0开始计数
+1.Thread()
+	Thread-0
+	Thread-1
+	Thread-2
+2.如果在构造Thread的时候没有传递Runnable或者没有复写Thread的run方法，该Thread将不会调用任何东西，
+  如果 传递了Runnable接口的实例，或者复写了Thread的run方法，则会执行该方法的逻辑单元（逻辑代码）
+3.如果构造线程对象时未传入ThreadGroup，Thread默认获取 父线程的ThreadGroup作为该线程的ThreadGroup,此时子线程和父线程将会在同一个ThreadGroup中
+
+4. 构造Thread的时候传入stacksize代表着该线程占用的相处甚欢k大小，如果没有指定stacksize的大小，默认是0，0代表着会忽略该参数，该参数会被jni函数去使用
+   需要注意：该参数在某些操作系统上无效
+   一般会通过JVM -Xss参数设置
+stackSize 依赖平台，在某些操作系统上无影响
+
+bolg.csdn.net/wangwenjun69/article/details/9747207

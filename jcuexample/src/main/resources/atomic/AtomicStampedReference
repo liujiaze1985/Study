@@ -1,0 +1,10 @@
+API
+	get
+    set
+    compareAndSet
+    weakCompareAndSet
+    attemptStamp
+    getReference
+    getStamp
+
+解决ABA的问题，相当于数据库修改数据的时候，需要对比版本号
