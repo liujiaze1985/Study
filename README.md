@@ -2,6 +2,9 @@
 项目说明
 - classLoader 
 - concurrency
+- connection 
+    - redis
+    - activemq 
 - DesignPattern
 - java8
 - jcuexample
