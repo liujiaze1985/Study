@@ -5,8 +5,9 @@
 - connection 
     - redis
     - activemq 
-- DesignPattern
+- DesignPattern 设计模式
 - java8
-- jcuexample
-- springmvc 实现简化版springmvc
+- jcuexample    多线程第三阶段
+- springmvc     实现简化版springmvc
+- thread_design_pattern 多线程设计模式
 
